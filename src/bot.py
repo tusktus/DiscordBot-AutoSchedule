@@ -38,7 +38,7 @@ async def schedule_list(interaction: discord.Interaction):
 
 @bot.event
 async def on_ready():
-    await bot.tree.clear_commands(guild=guild)
+    bot.tree.clear_commands(guild=guild)
     await bot.tree.sync(guild=guild)
     print(f"Bot logged in as {bot.user}")
     print("Commands synced")
