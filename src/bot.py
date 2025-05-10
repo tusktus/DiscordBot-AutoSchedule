@@ -9,6 +9,9 @@ load_dotenv()
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 MONGODB_URI = os.getenv("MONGODB_URI")
 
+# ギルドID（開発中のサーバーのIDに置き換えてください）
+GUILD_ID = discord.Object(id=1370626910731894796)  # サーバーのID
+
 intents = discord.Intents.default()
 bot = commands.Bot(command_prefix="!", intents=intents)
 
@@ -18,7 +21,7 @@ schedules = db["schedules"]
 
 @bot.event
 async def on_ready():
-    await bot.tree.sync()
+    await bot.tree.sync(guild=GUILD_ID)
     print(f"✅ Logged in as {bot.user}")
 
 # スケジュール作成コマンド
@@ -73,8 +76,8 @@ async def show_result(interaction: discord.Interaction, schedule_id: str):
     await interaction.response.send_message(result_text)
 
 # コマンド登録
-bot.tree.add_command(create_schedule)
-bot.tree.add_command(vote_schedule)
-bot.tree.add_command(show_result)
+bot.tree.add_command(create_schedule, guild=GUILD_ID)
+bot.tree.add_command(vote_schedule, guild=GUILD_ID)
+bot.tree.add_command(show_result, guild=GUILD_ID)
 
 bot.run(DISCORD_TOKEN)
