@@ -13,7 +13,13 @@ async def on_ready():
 
 @app_commands.command(name="hello", description="テスト挨拶コマンド")
 async def hello(interaction: discord.Interaction):
-    await interaction.response.send_message("こんにちは！")
+    try:
+        # 応答を保留してからメッセージを送る
+        await interaction.response.defer()
+        await interaction.followup.send("こんにちは！")
+    except discord.errors.NotFound as e:
+        print(f"Error while responding to interaction: {e}")
+        await interaction.followup.send("エラーが発生しました。もう一度試してください。")
 
 bot.tree.add_command(hello)
 
