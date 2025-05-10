@@ -14,8 +14,13 @@ async def on_ready():
 @app_commands.command(name="hello", description="テスト挨拶コマンド")
 async def hello(interaction: discord.Interaction):
     try:
+        if interaction.response.is_done():
+            print("Interaction already acknowledged.")
+            return
         # 応答を保留してからメッセージを送る
+        print("Deferring response...")
         await interaction.response.defer()
+        print("Sending followup...")
         await interaction.followup.send("こんにちは！")
     except discord.errors.NotFound as e:
         print(f"Error while responding to interaction: {e}")
