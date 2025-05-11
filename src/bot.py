@@ -49,10 +49,9 @@ async def on_ready():
     # コマンドのSync処理（即時適用のため）
     try:
         print('Syncing application commands...')
-        # 特定のギルドにのみコマンドを同期
+        # グローバルコマンドの同期（または特定のギルドのみに同期）
         guild = discord.Object(id=GUILD_ID)
-        bot.tree.copy_global_to(guild=guild)
-        await bot.tree.sync(guild=guild)
+        await bot.tree.sync(guild=guild)  # ギルド固有のコマンド同期
         print('Command sync complete!')
     except Exception as e:
         print(f'Error syncing commands: {e}')
