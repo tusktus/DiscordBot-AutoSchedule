@@ -8,6 +8,8 @@ from pymongo import MongoClient
 from datetime import datetime
 import pytz
 from dotenv import load_dotenv
+from flask import Flask
+from threading import Thread
 
 # .env ファイルから環境変数を読み込む
 load_dotenv()
@@ -515,5 +517,22 @@ async def slash_help(interaction: discord.Interaction):
     
     await interaction.response.send_message(embed=embed)
 
+
+
+# HTTPサーバーでRenderのポートスキャンを回避（ダミー）
+app = Flask(__name__)
+
+@app.route("/")
+def index():
+    return "OK"  # Renderのポートスキャン対策用
+
+def run_http_server():
+    port = int(os.environ.get("PORT", 10000))  # Renderが使用するPORT
+    app.run(host="0.0.0.0", port=port)
+
 if __name__ == "__main__":
+    # HTTPサーバーを別スレッドで起動
+    Thread(target=run_http_server).start()
+    
+    # Discord Botを起動
     bot.run(DISCORD_TOKEN)
