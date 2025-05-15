@@ -17,7 +17,17 @@ load_dotenv()
 # 環境変数から設定を取得
 DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
 MONGODB_URI = os.getenv('MONGODB_URI')
-GUILD_ID = int(os.getenv('GUILD_ID'))  # 特定のサーバーIDを環境変数から取得
+GUILD_ID = os.getenv('GUILD_ID')  # 特定のサーバーIDを環境変数から取得
+
+# Validate environment variables
+if not DISCORD_TOKEN:
+    raise ValueError("DISCORD_TOKEN is not set in the environment variables.")
+if not MONGODB_URI:
+    raise ValueError("MONGODB_URI is not set in the environment variables.")
+if not GUILD_ID:
+    raise ValueError("GUILD_ID is not set in the environment variables.")
+else:
+    GUILD_ID = int(GUILD_ID)
 
 # Botの設定
 intents = discord.Intents.default()
