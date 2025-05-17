@@ -3,6 +3,7 @@
 
 import os
 import discord
+import asyncio
 from discord.ext import commands
 from pymongo import MongoClient
 from datetime import datetime
@@ -63,6 +64,7 @@ async def on_ready():
         print('Syncing application commands...')
         # グローバルコマンドの同期（または特定のギルドのみに同期）
         guild = discord.Object(id=GUILD_ID)
+        await asyncio.sleep(1)  # 確実にBotが起動してから同期を行うための待機
         await bot.tree.sync(guild=guild)  # ギルド固有のコマンド同期
         print('Command sync complete!')
     except Exception as e:
